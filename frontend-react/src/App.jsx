@@ -1,6 +1,6 @@
 import Header from "./component/Header/Header";
 import Footer from "./component/Footer/Footer";
-import Diarydisplay from "./component/Body/Diarydisplay";
+import DiaryList from "./component/Body/DiaryList";
 import "./App.css";
 
 function App() {
@@ -8,8 +8,7 @@ function App() {
     <>
       <div>
         <Header />
-        <Diarydisplay />
-
+        <DiaryList />
         <Footer />
       </div>
     </>
