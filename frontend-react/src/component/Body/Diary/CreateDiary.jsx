@@ -24,6 +24,20 @@ function CreateDiary() {
     //在原来state的基础上增添键值对
   }
 
+  // function submitDiary(event) {
+  //   event.preventDefault();
+  //   //阻止默认事件，即提交表单后页面不会刷新
+  //   //console.log(diary);
+  //   fetch("http://localhost:3000/diaries", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(diary),
+  //   })
+  //     .then((response) => response.json())
+  // }
+
   return (
     <div>
       <form>
