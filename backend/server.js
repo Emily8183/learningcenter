@@ -43,6 +43,12 @@ app.get("/diaries/:id", (req, res) => {
 //Post a new diary
 app.post("/diaries", (req, res) => {
   const { title, content } = req.body;
+
+  const newDiary = { id: diaries.length + 1, title, content };
+
+  diaries.push(newDiary);
+
+  res.status(201).json(newDiary);
 });
 
 app.listen(port, () => {
