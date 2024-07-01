@@ -51,6 +51,22 @@ app.post("/diaries", (req, res) => {
   res.status(201).json(newDiary);
 });
 
+//PUT(replace the entire existing diary with a new one)
+app.put("/diaries/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const { title, content } = req.body;
+
+  const diary = diaries.find((diary) => diary.id === id);
+
+  if (diary) {
+    diary.title = title || diary.title;
+    diary.content = content || diary.content;
+    res.json(diary);
+  } else {
+    res.status(404).json({ message: "Diary not found" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
