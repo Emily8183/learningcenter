@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
+
 import axios from "axios";
 
+import DiaryItem from "./DiaryItem";
+
 function DiaryList() {
-  const [posts, setPosts] = useState([]);
+  const [diaries, setDiaries] = useState([]);
 
   useEffect(() => {
     axios
       .get("http://localhost:3000/")
       .then((response) => {
-        setPosts(response.data);
+        setDiaries(response.data);
       })
       .catch((error) => {
-        console.log("There's an error fetching the posts!", error);
+        console.log("There's an error fetching the diaries!", error);
       });
   }, []);
 
@@ -19,11 +22,8 @@ function DiaryList() {
     <div>
       <h1>Check out the latest diaries</h1>
       <ul>
-        {posts.map((post) => (
-          <li key={post.id}>
-            <h1>{post.title}</h1>
-            <p>{post.content}</p>
-          </li>
+        {diaries.map((diary) => (
+          <DiaryItem key={diary.id} diaryInfo={diary} />
         ))}
       </ul>
     </div>
