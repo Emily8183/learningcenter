@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, "../frontend-react/build")));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const diaries = [
+let diaries = [
   { id: 1, title: "First Diary", content: "This is the first Diary" },
   { id: 2, title: "Second Diary", content: "This is the second Diary" },
 ];
@@ -65,6 +65,15 @@ app.put("/diaries/:id", (req, res) => {
   } else {
     res.status(404).json({ message: "Diary not found" });
   }
+});
+
+//DELETE a diary
+app.delete("/diaries/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+
+  diaries = diaries.filter((diary) => diary.id !== id);
+
+  res.sendStatus(204);
 });
 
 app.listen(port, () => {
