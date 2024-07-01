@@ -6,6 +6,7 @@ import cors from "cors";
 
 const app = express();
 const port = 3000;
+// this is the server end to deal with the API
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -27,8 +28,9 @@ app.get("/", (req, res) => {
 });
 
 //Get a single diary
-app.get("/diary/:id", (req, res) => {
+app.get("/diaries/:id", (req, res) => {
   const id = parseInt(req.params.id);
+
   const foundDiary = diaries.find((diary) => diary.id === id);
 
   if (foundDiary) {
@@ -36,6 +38,11 @@ app.get("/diary/:id", (req, res) => {
   } else {
     res.status(404).json({ error: "Diary not found" });
   }
+});
+
+//Post a new diary
+app.post("/diaries", (req, res) => {
+  const { title, content } = req.body;
 });
 
 app.listen(port, () => {
