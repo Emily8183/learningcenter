@@ -7,19 +7,18 @@ function CreateDiary() {
   });
 
   function handleChange(event) {
-    console.log(event);
-    const { name, value } = event.target;
-
+    //const { name, value } = event.target;
     //deconstructure
     //相当于
     //const name = event.target.name;
     //const value = event.target.value;
-    //记住必须在set state外面assign event.target，不能在setDiary内使用（原因：synthetic event)
+    //React 16及之前的老版本，event.target必须在setState外部使用（原因：synthetic event)
+    //新版本不需要
 
     setDiary((prevDiary) => {
       return {
         ...prevDiary,
-        [name]: value,
+        [event.target.name]: event.target.value,
       };
     });
     //在原来state的基础上增添键值对
@@ -41,7 +40,7 @@ function CreateDiary() {
           placeholder="What I have learned today..."
           rows="3"
         />
-        <button>Create</button>
+        <button onClick={submitDiary}>Create</button>
       </form>
     </div>
   );
