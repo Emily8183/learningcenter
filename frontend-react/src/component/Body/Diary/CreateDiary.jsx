@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 function CreateDiary() {
   const [diary, setDiary] = useState({
@@ -24,32 +25,40 @@ function CreateDiary() {
     //在原来state的基础上增添键值对
   }
 
-  // function submitDiary(event) {
-  //   event.preventDefault();
-  //   //阻止默认事件，即提交表单后页面不会刷新
-  //   //console.log(diary);
-  //   fetch("http://localhost:3000/diaries", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(diary),
-  //   })
-  //     .then((response) => response.json())
-  // }
+  function submitDiary(event) {
+    event.preventDefault();
+    //阻止默认事件，即提交表单后页面不会刷新
+
+    // fetch("http://localhost:3000/diaries", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(diary),
+    // })
+    axios
+      .post("http://localhost:3000/diaries", diary)
+      .then((response) => {
+        console.log(response.data); //打印响应数据
+        setDiary({ title: "", content: "" }); //重置表单,它会将 diary 的 title 和 content 字段重置为空字符串。这意味着表单中的输入框会被清空，准备好让用户输入新的日记条目。
+      })
+      .catch((error) => console.error(error));
+  }
 
   return (
     <div>
       <form>
         <input
-          type="tex"
+          type="text"
           name="title"
+          value={diary.title}
           onChange={handleChange}
           placeholder="Title"
         />
         <textarea
           type="text"
           name="content"
+          value={diary.content}
           onChange={handleChange}
           placeholder="What I have learned today..."
           rows="3"

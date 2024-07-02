@@ -23,7 +23,10 @@ function DiaryList() {
       <h1>Check out the latest diaries</h1>
       <ul>
         {diaries.map((diary) => (
-          <DiaryItem key={diary.id} diaryInfo={diary} />
+          <li key={diary.id}>
+            <strong>{diary.title}</strong>
+            <p>{diary.content}</p>
+          </li>
         ))}
       </ul>
     </div>
