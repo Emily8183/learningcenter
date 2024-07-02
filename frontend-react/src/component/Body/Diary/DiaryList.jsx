@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-
 import axios from "axios";
-
 import DiaryItem from "./DiaryItem";
 
 function DiaryList() {
@@ -24,8 +22,7 @@ function DiaryList() {
       <ul>
         {diaries.map((diary) => (
           <li key={diary.id}>
-            <strong>{diary.title}</strong>
-            <p>{diary.content}</p>
+            <DiaryItem id={diary.id} />
           </li>
         ))}
       </ul>

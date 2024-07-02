@@ -29,13 +29,6 @@ function CreateDiary() {
     event.preventDefault();
     //阻止默认事件，即提交表单后页面不会刷新
 
-    // fetch("http://localhost:3000/diaries", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(diary),
-    // })
     axios
       .post("http://localhost:3000/diaries", diary)
       .then((response) => {

@@ -12,15 +12,15 @@ import axios from "axios";
 //   );
 // }
 
-function DiaryItem({ diaryId }) {
+function DiaryItem({ id }) {
   const [diaryInfo, setDiaryInfo] = useState(null);
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/diaries/${diaryId}`)
+      .get(`http://localhost:3000/diaries/${id}`)
       .then((response) => setDiaryInfo(response.data))
       .catch((error) => console.error(error));
-  }, [diaryId]);
+  }, [id]);
 
   if (!diaryInfo) {
     return <div>Loading...</div>;
@@ -28,7 +28,7 @@ function DiaryItem({ diaryId }) {
 
   return (
     <div>
-      <h2>{diaryInfo.title}</h2>
+      <strong>{diaryInfo.title}</strong>
       <p>{diaryInfo.content}</p>
     </div>
   );
