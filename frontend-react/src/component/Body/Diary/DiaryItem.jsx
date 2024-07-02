@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import DeleteDiaryButton from "./DeleteDiaryButton";
 import axios from "axios";
 
 // function DiaryItem(props) {
@@ -12,7 +13,7 @@ import axios from "axios";
 //   );
 // }
 
-function DiaryItem({ id }) {
+function DiaryItem({ id, onEdit, onDelete }) {
   const [diaryInfo, setDiaryInfo] = useState(null);
 
   useEffect(() => {
@@ -27,9 +28,11 @@ function DiaryItem({ id }) {
   }
 
   return (
-    <div>
+    <div className="diaryItem">
       <strong>{diaryInfo.title}</strong>
       <p>{diaryInfo.content}</p>
+      <DeleteDiaryButton id={diaryInfo.id} onDelete={onDelete} />
+      <button onClick={() => onDelete(id)}>Delete</button>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import DiaryItem from "./DiaryItem";
 function DiaryList() {
   const [diaries, setDiaries] = useState([]);
 
+  //to connect frontend and backend
   useEffect(() => {
     axios
       .get("http://localhost:3000/")
