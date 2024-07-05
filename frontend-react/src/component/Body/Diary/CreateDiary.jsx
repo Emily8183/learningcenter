@@ -3,13 +3,13 @@ import axios from "axios";
 
 // https://charisol.io/how-to-build-a-crud-app-with-react-and-restful-apis/
 
-function CreateDiary() {
+function CreateDiary({ onAddDiary }) {
   const [newDiary, setNewDiary] = useState({
     title: "",
     content: "",
   });
 
-  function handleChange(event) {
+  function handleTextChange(event) {
     //const { name, value } = event.target;
     //deconstructure
     //相当于
@@ -34,7 +34,7 @@ function CreateDiary() {
     axios
       .post("http://localhost:3000/diaries", newDiary)
       .then((response) => {
-        console.log(response.data); //打印响应数据
+        onAddDiary(response.data); //调用回调函数
         setNewDiary({ title: "", content: "" }); //重置表单,它会将 diary 的 title 和 content 字段重置为空字符串。这意味着表单中的输入框会被清空，准备好让用户输入新的日记条目。
       })
       .catch((error) => console.error(error));
@@ -42,23 +42,23 @@ function CreateDiary() {
 
   return (
     <div>
-      <form>
+      <form onSubmit={submitDiary}>
         <input
           type="text"
           name="title"
           value={newDiary.title}
-          onChange={handleChange}
+          onChange={handleTextChange}
           placeholder="Title"
         />
         <textarea
           type="text"
           name="content"
           value={newDiary.content}
-          onChange={handleChange}
+          onChange={handleTextChange}
           placeholder="What I have learned today..."
           rows="3"
         />
-        <button onClick={submitDiary}>Create</button>
+        <button type="submit">Create</button>
       </form>
     </div>
   );

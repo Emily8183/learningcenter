@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import DeleteDiaryButton from "./DeleteDiaryButton";
 import axios from "axios";
 
 // function DiaryItem(props) {
@@ -15,13 +14,50 @@ import axios from "axios";
 
 function DiaryItem({ id, onEdit, onDelete }) {
   const [diaryInfo, setDiaryInfo] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedDiary, setEditedDiary] = useState({
+    title: "",
+    content: "",
+  });
 
   useEffect(() => {
     axios
       .get(`http://localhost:3000/diaries/${id}`)
-      .then((response) => setDiaryInfo(response.data))
+      .then((response) => {
+        setDiaryInfo(response.data);
+        setEditedDiary({
+          title: response.data.title,
+          content: response.data.content,
+        });
+      })
       .catch((error) => console.error(error));
   }, [id]);
+
+  const handleEditChange = (event) => {
+    setEditedDiary((prevDiary) => {
+      return {
+        ...prevDiary,
+        [event.target.name]: event.target.value,
+      };
+    });
+  };
+
+  const handleEditSubmit = (event) => {
+    event.preventDefault();
+
+    const changes = {};
+
+    if (editedDiary.title !== diaryInfo.title) {
+      changes.title = editedDiary.title;
+    }
+
+    if (editedDiary.content !== diaryInfo.content) {
+      changes.content = editedDiary.content;
+    }
+
+    onEdit(id, changes);
+    setIsEditing(false);
+  };
 
   if (!diaryInfo) {
     return <div>Loading...</div>;
@@ -29,10 +65,31 @@ function DiaryItem({ id, onEdit, onDelete }) {
 
   return (
     <div className="diaryItem">
-      <strong>{diaryInfo.title}</strong>
-      <p>{diaryInfo.content}</p>
-      <DeleteDiaryButton id={diaryInfo.id} onDelete={onDelete} />
-      <button onClick={() => onDelete(id)}>Delete</button>
+      {/* set up a window for editting diaries */}
+      {isEditing ? (
+        <form onSubmit={handleEditSubmit}>
+          <input
+            type="text"
+            name="title"
+            value={editedDiary.title}
+            onChange={handleEditChange}
+          />
+          <textarea
+            name="content"
+            value={editedDiary.content}
+            onChange={handleEditChange}
+          />
+          <button type="submit">Save</button>
+          <button onClick={() => setIsEditing(false)}>Cancel</button>
+        </form>
+      ) : (
+        <>
+          <strong>{diaryInfo.title}</strong>
+          <p>{diaryInfo.content}</p>
+          <button onClick={() => setIsEditing(true)}>Edit</button>
+          <button onClick={onDelete}>Delete</button>
+        </>
+      )}
     </div>
   );
 }
