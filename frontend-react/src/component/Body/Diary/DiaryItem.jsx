@@ -21,23 +21,28 @@ function DiaryItem({ id, onEdit, onDelete }) {
   });
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:3000/diaries/${id}`)
-      .then((response) => {
+    const fetchDiary = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/diaries/${id}`);
         setDiaryInfo(response.data);
         setEditedDiary({
           title: response.data.title,
           content: response.data.content,
         });
-      })
-      .catch((error) => console.error(error));
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchDiary();
   }, [id]);
 
   const handleEditChange = (event) => {
+    const { name, value } = event.target;
     setEditedDiary((prevDiary) => {
       return {
         ...prevDiary,
-        [event.target.name]: event.target.value,
+        [name]: value,
       };
     });
   };
@@ -45,18 +50,21 @@ function DiaryItem({ id, onEdit, onDelete }) {
   const handleEditSubmit = (event) => {
     event.preventDefault();
 
-    const changes = {};
-
-    if (editedDiary.title !== diaryInfo.title) {
-      changes.title = editedDiary.title;
-    }
-
-    if (editedDiary.content !== diaryInfo.content) {
-      changes.content = editedDiary.content;
-    }
-
-    onEdit(id, changes);
+    onEdit(id, editedDiary);
     setIsEditing(false);
+
+    // const changes = {};
+
+    // if (editedDiary.title !== diaryInfo.title) {
+    //   changes.title = editedDiary.title;
+    // }
+
+    // if (editedDiary.content !== diaryInfo.content) {
+    //   changes.content = editedDiary.content;
+    // }
+
+    // onEdit(id, changes);
+    // setIsEditing(false);
   };
 
   if (!diaryInfo) {
@@ -80,7 +88,9 @@ function DiaryItem({ id, onEdit, onDelete }) {
             onChange={handleEditChange}
           />
           <button type="submit">Save</button>
-          <button onClick={() => setIsEditing(false)}>Cancel</button>
+          <button type="button" onClick={() => setIsEditing(false)}>
+            Cancel
+          </button>
         </form>
       ) : (
         <>

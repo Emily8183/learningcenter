@@ -67,6 +67,42 @@ app.put("/diaries/:id", (req, res) => {
   }
 });
 
+//Patch
+app.patch("/diaries/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+
+  const existingDiary = diaries.find((diary) => diary.id === id);
+
+  //   if (existingDiary) {
+  //     if (req.body.title) {
+  //       existingDiary.title = req.body.title;
+  //     }
+  //     if (req.body.content) {
+  //       existingDiary.content = req.body.content;
+  //     }
+  //     res.json(existingDiary);
+  //   } else {
+  //     return res.status(404).json({ error: "Diary not found" });
+  //   }
+  // });
+
+  if (!existingDiary) {
+    return res.status(404).json({ message: "Diary not found" });
+  }
+
+  const replacementDiary = {
+    id: id,
+    title: req.body.title || existingDiary.title,
+    content: req.body.content || existingDiary.content,
+  };
+
+  const searchIndex = diaries.findIndex((diary) => diary.id === id);
+
+  diaries[searchIndex] = replacementDiary;
+
+  res.json(replacementDiary);
+});
+
 //DELETE a diary
 app.delete("/diaries/:id", (req, res) => {
   const id = parseInt(req.params.id);
