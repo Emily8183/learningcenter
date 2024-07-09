@@ -13,7 +13,10 @@ import axios from "axios";
 // }
 
 function DiaryItem({ id, onEdit, onDelete }) {
-  const [diaryInfo, setDiaryInfo] = useState(null);
+  const [initialDiary, setInitialDiary] = useState({
+    title: "",
+    content: "",
+  });
   const [isEditing, setIsEditing] = useState(false);
   const [editedDiary, setEditedDiary] = useState({
     title: "",
@@ -24,7 +27,7 @@ function DiaryItem({ id, onEdit, onDelete }) {
     const fetchDiary = async () => {
       try {
         const response = await axios.get(`http://localhost:3000/diaries/${id}`);
-        setDiaryInfo(response.data);
+        setInitialDiary(response.data);
         setEditedDiary({
           title: response.data.title,
           content: response.data.content,
@@ -52,24 +55,13 @@ function DiaryItem({ id, onEdit, onDelete }) {
 
     onEdit(id, editedDiary);
     setIsEditing(false);
-
-    // const changes = {};
-
-    // if (editedDiary.title !== diaryInfo.title) {
-    //   changes.title = editedDiary.title;
-    // }
-
-    // if (editedDiary.content !== diaryInfo.content) {
-    //   changes.content = editedDiary.content;
-    // }
-
-    // onEdit(id, changes);
-    // setIsEditing(false);
   };
 
-  if (!diaryInfo) {
-    return <div>Loading...</div>;
-  }
+  const handleCancelEdit = (event) => {
+    event.preventDefault();
+    setIsEditing(!isEditing);
+    setEditedDiary(initialDiary);
+  };
 
   return (
     <div className="diaryItem">
@@ -88,14 +80,14 @@ function DiaryItem({ id, onEdit, onDelete }) {
             onChange={handleEditChange}
           />
           <button type="submit">Save</button>
-          <button type="button" onClick={() => setIsEditing(false)}>
+          <button type="button" onClick={handleCancelEdit}>
             Cancel
           </button>
         </form>
       ) : (
         <>
-          <strong>{diaryInfo.title}</strong>
-          <p>{diaryInfo.content}</p>
+          <strong>{editedDiary.title}</strong>
+          <p>{editedDiary.content}</p>
           <button onClick={() => setIsEditing(true)}>Edit</button>
           <button onClick={onDelete}>Delete</button>
         </>
