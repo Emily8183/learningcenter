@@ -65,8 +65,6 @@ function DiaryList() {
                 onDelete={() => handleDelete(diary.id)}
                 // 这里不能放 onDelete={handleDelete},因为会导致id数据不能成功导入
                 onEdit={(updatedDiary) => handleEdit(diary.id, updatedDiary)}
-                // diaryInfo={diary}
-                // 传递Diary信息
               />
             </li>
           ))}

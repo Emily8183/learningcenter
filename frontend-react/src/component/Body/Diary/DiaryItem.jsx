@@ -17,6 +17,7 @@ function DiaryItem({ id, onEdit, onDelete }) {
     title: "",
     content: "",
   });
+
   const [isEditing, setIsEditing] = useState(false);
   const [editedDiary, setEditedDiary] = useState({
     title: "",
